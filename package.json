@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "postinstall": "rm -f package-lock.json"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.6.1",
@@ -27,5 +28,6 @@
   "devDependencies": {
     "@babel/core": "^7.24.0"
   },
-  "private": true
+  "private": true,
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

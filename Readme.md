@@ -14,7 +14,7 @@ The Tiffin Management System App is designed to streamline daily tiffin services
 Ensure you have the following installed on your local machine before starting:
 
 - Node.js (version 14.x or later)
-- npm (Node Package Manager)
+- Yarn (Node Package Manager)
 - React Native CLI
 - Expo CLI
 
@@ -32,7 +32,7 @@ Ensure you have the following installed on your local machine before starting:
 
 3. Install the required dependencies:
     ```sh
-    npm install
+    yarn install
     ```
 
 4. Start the Expo development server:

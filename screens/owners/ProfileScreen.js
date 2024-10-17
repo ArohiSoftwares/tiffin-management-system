@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ActivityIndicator, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // For the pencil icon
-
+import * as ImagePicker from 'expo-image-picker';
 
 const ProfileScreen = ({ navigation }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -11,13 +11,13 @@ const ProfileScreen = ({ navigation }) => {
     contactNumber: '123-456-7890',
   });
   const [editedOwner, setEditedOwner] = useState({ ...owner });
+  const [profileImage, setProfileImage] = useState(null);
   const [loading, setLoading] = useState(true);
 
- 
   const fetchOwnerData = async () => {
     try {
-      const response = null; // Will replace with mongoDB once backend is made
-      if (response.data && response.data.name) {
+      const response = null; // Will replace with MongoDB once backend is made
+      if (response?.data) {
         setOwner(response.data);
         setEditedOwner(response.data);
       }
@@ -32,7 +32,6 @@ const ProfileScreen = ({ navigation }) => {
     fetchOwnerData();
   }, []);
 
-
   const toggleEditMode = () => {
     if (isEditing) {
       setOwner(editedOwner); // Save changes locally for now
@@ -40,6 +39,18 @@ const ProfileScreen = ({ navigation }) => {
     setIsEditing(!isEditing); 
   };
 
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setProfileImage(result.assets[0].uri);
+    }
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -66,6 +77,17 @@ const ProfileScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Owner's Profile</Text>
+
+      {/* Profile Image */}
+      <TouchableOpacity onPress={isEditing ? pickImage : null}>
+        <Image
+          source={profileImage ? { uri: profileImage } : require('../../assets/defaultProfile.jpg')}
+          style={styles.profileImage}
+        />
+        {isEditing && (
+          <Icon name="edit" size={24} color="#007AFF" style={styles.editIcon} />
+        )}
+      </TouchableOpacity>
 
       {isEditing ? (
         <>
@@ -130,6 +152,22 @@ const styles = StyleSheet.create({
     color: '#007AFF',
     marginBottom: 30,
     textAlign: 'center',
+  },
+  profileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    alignSelf: 'center',
+    marginBottom: 20,
+    backgroundColor: '#ccc',
+  },
+  editIcon: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 5,
   },
   profileItem: {
     flexDirection: 'row',

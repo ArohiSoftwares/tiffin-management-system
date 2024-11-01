@@ -21,32 +21,33 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 // Define Owner Tab Navigator
-function OwnerTabNavigator() {
+function OwnerTabNavigator({ userName }) {
   return (
     <Tab.Navigator>
-      <Tab.Screen 
-        name="Home" 
-        component={HomeScreen} 
-        options={{ tabBarIcon: ({ color, size }) => <MaterialIcons name="home" size={size} color={color} /> }} 
+      <Tab.Screen
+        name="Home"
+        component={(props) => <HomeScreen {...props} userName={userName} />} // Pass userName to HomeScreen
+        options={{ tabBarIcon: ({ color, size }) => <MaterialIcons name="home" size={size} color={color} /> }}
       />
-      <Tab.Screen 
-        name="Dashboard" 
-        component={DashboardScreen} 
-        options={{ tabBarIcon: ({ color, size }) => <MaterialIcons name="dashboard" size={size} color={color} /> }} 
+      <Tab.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{ tabBarIcon: ({ color, size }) => <MaterialIcons name="dashboard" size={size} color={color} /> }}
       />
-      <Tab.Screen 
-        name="Attendance" 
-        component={AttendanceScreen} 
-        options={{ tabBarIcon: ({ color, size }) => <MaterialIcons name="check-circle" size={size} color={color} /> }} 
+      <Tab.Screen
+        name="Attendance"
+        component={AttendanceScreen}
+        options={{ tabBarIcon: ({ color, size }) => <MaterialIcons name="check-circle" size={size} color={color} /> }}
       />
-      <Tab.Screen 
-        name="Profile" 
-        component={ProfileScreen} 
-        options={{ tabBarIcon: ({ color, size }) => <MaterialIcons name="person" size={size} color={color} /> }} 
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ tabBarIcon: ({ color, size }) => <MaterialIcons name="person" size={size} color={color} /> }}
       />
     </Tab.Navigator>
   );
 }
+
 
 // Define Student Tab Navigator
 function StudentTabNavigator() {
@@ -81,16 +82,22 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} />
-        {/* Add a Main screen for redirection based on userRole */}
+       
         <Stack.Screen
           name="Main"
           options={{ headerShown: false }}
           component={({ route }) => {
-            const { userRole } = route.params || {};
-            return userRole === 'owner' ? <OwnerTabNavigator /> : <StudentTabNavigator />;
+            const { userName, userRole } = route.params || {};
+
+            return userRole === 'owner' ? (
+              <OwnerTabNavigator userName={userName} />
+            ) : (
+              <StudentTabNavigator/>
+            );
           }}
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+

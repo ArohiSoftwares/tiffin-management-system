@@ -7,7 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "postinstall": "rm -f package-lock.json"
+    "postinstall": "rimraf package-lock.json"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.6.1",
@@ -27,7 +27,8 @@
     "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0"
+    "@babel/core": "^7.24.0",
+    "rimraf": "^6.0.1"
   },
   "private": true,
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
